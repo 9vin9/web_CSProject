@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Head from 'next/head';
-import { useSelector, useDispatch } from 'react-redux';
-import Router from 'next/router';
+import { END } from 'redux-saga';
 
+import { Avatar, Card } from 'antd';
 import AppLayout from '../components/AppLayout';
-import NicknameEditForm from '../components/NicknameEditForm';
-import FollowList from '../components/FollowList';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Profile = () => {
   const dispatch = useDispatch();
