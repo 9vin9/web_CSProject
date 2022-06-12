@@ -8,7 +8,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => { // GET /user
+router.get('/', async (req, res, next) => { 
   try {
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
@@ -39,7 +39,7 @@ router.get('/', async (req, res, next) => { // GET /user
   }
 });
 
-router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
+router.get('/followers', isLoggedIn, async (req, res, next) => { 
   try {
     const user = await User.findOne({ where: { id: req.user.id }});
     if (!user) {
@@ -73,7 +73,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => { // GET /user/f
   }
 });
 
-router.get('/:id', async (req, res, next) => { // GET /user/3
+router.get('/:id', async (req, res, next) => { 
   try {
     const fullUserWithoutPassword = await User.findOne({
       where: { id: req.params.id },
@@ -108,14 +108,14 @@ router.get('/:id', async (req, res, next) => { // GET /user/3
   }
 });
 
-router.get('/:id/posts', async (req, res, next) => { // GET /user/1/posts
+router.get('/:id/posts', async (req, res, next) => { 
   try {
     const user = await User.findOne({ where: { id: req.params.id }});
     if (user) {
       const where = {};
-      if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
+      if (parseInt(req.query.lastId, 10)) { 
         where.id = { [Op.lt]: parseInt(req.query.lastId, 10)}
-      } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+      } 
       const posts = await user.getPosts({
         where,
         limit: 10,
@@ -237,7 +237,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { // PATCH /user/1/follow
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { 
   try {
     const user = await User.findOne({ where: { id: req.params.userId }});
     if (!user) {
@@ -251,11 +251,11 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { // PATCH
   }
 });
 
-router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { // DELETE /user/1/follow
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { 
   try {
     const user = await User.findOne({ where: { id: req.params.userId }});
     if (!user) {
-      res.status(403).send('언팔로우 하려는 사용자가 존재하지 않습니다.');
+      res.status(403).send('팔로우 하려는 사용자가 존재하지 않습니다.');
     }
     await user.removeFollowers(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
@@ -269,7 +269,7 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => { // DE
   try {
     const user = await User.findOne({ where: { id: req.params.userId }});
     if (!user) {
-      res.status(403).send('차단하고자 하는 사용자가 존재하지 않습니다.');
+      res.status(403).send('언팔로우 하려는 사용자가 존재하지 않습니다.');
     }
     await user.removeFollowings(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
