@@ -9,14 +9,12 @@ import wrapper from '../store/configureStore';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.user);
 
   return (
     <AppLayout>
       <Head>
-        <title>내 프로필 | Beebeeb</title>
+        <title>ZeroCho | NodeBird</title>
       </Head>
       {userInfo
         ? (
@@ -42,7 +40,7 @@ const Profile = () => {
             <Card.Meta
               avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
               title={userInfo.nickname}
-              description="CS"
+              description="CS member"
             />
           </Card>
         )
@@ -52,13 +50,13 @@ const Profile = () => {
 };
 
 export const getStaticProps = wrapper.getStaticProps(async (context) => {
-    console.log('getStaticProps');
-    context.store.dispatch({
-      type: LOAD_USER_REQUEST,
-      data: 1,
-    });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
+  console.log('getStaticProps');
+  context.store.dispatch({
+    type: LOAD_USER_REQUEST,
+    data: 1,
   });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default Profile;
